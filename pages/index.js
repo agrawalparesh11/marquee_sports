@@ -6,6 +6,12 @@ export default function Home() {
     "/slides/slide1.jpg",
     "/slides/slide2.jpg",
     "/slides/slide3.jpg",
+    "/slides/slide4.jpg",
+    "/slides/slide5.jpg",
+    "/slides/slide6.jpg",
+    "/slides/slide7.jpg",
+    "/slides/slide8.jpg",
+    "/slides/slide9.jpg",
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
