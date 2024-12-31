@@ -17,32 +17,37 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const isDragging = useRef(false);
   const startX = useRef(0);
+  const endX = useRef(0);
 
+  // Next Slide
   const handleNext = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
+  // Previous Slide
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const handleMouseDown = (e) => {
+  // Handle Drag Start (Mouse/Touch)
+  const handleDragStart = (e) => {
     isDragging.current = true;
-    startX.current = e.clientX;
+    startX.current = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
   };
 
-  const handleMouseUp = (e) => {
+  // Handle Drag End (Mouse/Touch)
+  const handleDragEnd = (e) => {
     if (!isDragging.current) return;
     isDragging.current = false;
 
-    const distance = e.clientX - startX.current;
+    endX.current = e.type === "touchend" ? e.changedTouches[0].clientX : e.clientX;
 
-    if (distance > 50) {
-      // Dragged right
-      handlePrev();
-    } else if (distance < -50) {
-      // Dragged left
-      handleNext();
+    const dragDistance = startX.current - endX.current;
+
+    if (dragDistance > 50) {
+      handleNext(); // Drag Left
+    } else if (dragDistance < -50) {
+      handlePrev(); // Drag Right
     }
   };
 
@@ -55,8 +60,10 @@ export default function Home() {
         height: "100vh",
         overflow: "hidden",
       }}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      onMouseDown={handleDragStart}
+      onMouseUp={handleDragEnd}
+      onTouchStart={handleDragStart}
+      onTouchEnd={handleDragEnd}
     >
       {/* Set the Title */}
       <Head>
