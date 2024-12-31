@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import Head from "next/head";
 
 export default function Home() {
   const slides = [
-    "/slides/slide1.jpg", // Ensure these paths are correct
+    "/slides/slide1.jpg",
     "/slides/slide2.jpg",
     "/slides/slide3.jpg",
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const endX = useRef(0);
 
   const handleNext = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -17,12 +21,44 @@ export default function Home() {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+    startX.current = e.clientX;
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+
+    if (startX.current > endX.current + 50) {
+      handleNext(); // Dragged left
+    } else if (startX.current < endX.current - 50) {
+      handlePrev(); // Dragged right
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    endX.current = e.clientX;
+  };
+
   return (
-    <div style={{ margin: 0, padding: 0, backgroundColor: "#000", height: "100vh" }}>
+    <div
+      style={{ margin: 0, padding: 0, backgroundColor: "#000", height: "100vh" }}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+    >
+      {/* Set the Title */}
+      <Head>
+        <title>Marque Sports Co.</title>
+        <meta name="description" content="A simple interactive slide presentation." />
+      </Head>
+
       {/* Logo */}
       <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 1000 }}>
         <img
-          src="/logo.png" // Replace with your logo path
+          src="/logo.png"
           alt="Logo"
           style={{ width: "100px", height: "auto" }}
         />
@@ -31,10 +67,11 @@ export default function Home() {
       {/* Main Slide */}
       <div
         style={{
-          height: "100vh", // Full viewport height
+          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          position: "relative",
         }}
       >
         <img
@@ -48,24 +85,15 @@ export default function Home() {
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
           }}
         />
-      </div>
 
-      {/* Navigation Buttons */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          transform: "translateY(-50%)",
-          padding: "0 20px",
-        }}
-      >
+        {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
           style={{
+            position: "absolute",
+            left: "20px",
+            top: "50%",
+            transform: "translateY(-50%)",
             backgroundColor: "rgba(255, 255, 255, 0.8)",
             border: "none",
             borderRadius: "50%",
@@ -76,6 +104,7 @@ export default function Home() {
             alignItems: "center",
             cursor: "pointer",
             fontSize: "24px",
+            zIndex: 1000,
           }}
         >
           ‹
@@ -83,6 +112,10 @@ export default function Home() {
         <button
           onClick={handleNext}
           style={{
+            position: "absolute",
+            right: "20px", // Fixed to the correct placement
+            top: "50%",
+            transform: "translateY(-50%)",
             backgroundColor: "rgba(255, 255, 255, 0.8)",
             border: "none",
             borderRadius: "50%",
@@ -93,10 +126,37 @@ export default function Home() {
             alignItems: "center",
             cursor: "pointer",
             fontSize: "24px",
+            zIndex: 1000,
           }}
         >
           ›
         </button>
+      </div>
+
+      {/* Dots (Slide Indicators) */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            style={{
+              width: "12px",
+              height: "12px",
+              margin: "0 5px",
+              borderRadius: "50%",
+              backgroundColor: currentSlide === index ? "#fff" : "rgba(255, 255, 255, 0.5)",
+              cursor: "pointer",
+            }}
+          ></div>
+        ))}
       </div>
 
       {/* Contact Email */}
