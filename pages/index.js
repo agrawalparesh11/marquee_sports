@@ -19,23 +19,19 @@ export default function Home() {
   const startX = useRef(0);
   const endX = useRef(0);
 
-  // Next Slide
   const handleNext = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  // Previous Slide
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  // Handle Drag Start (Mouse/Touch)
   const handleDragStart = (e) => {
     isDragging.current = true;
     startX.current = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
   };
 
-  // Handle Drag End (Mouse/Touch)
   const handleDragEnd = (e) => {
     if (!isDragging.current) return;
     isDragging.current = false;
@@ -69,44 +65,61 @@ export default function Home() {
       <Head>
         <title>Marque Sports Co.</title>
         <meta name="description" content="A simple interactive slide presentation." />
+        <style>
+          {`
+            @media (max-width: 600px) {
+              .header-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+              }
+              .logo {
+                margin-bottom: 10px;
+              }
+              .email {
+                align-self: flex-end;
+              }
+            }
+          `}
+        </style>
       </Head>
 
-      {/* Logo */}
-      <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 1000 }}>
+      {/* Header Container */}
+      <div className="header-container" style={{ position: "absolute", top: "10px", left: "10px", right: "10px", zIndex: 1000 }}>
+        {/* Logo */}
         <img
           src="/logo.png"
           alt="Logo"
+          className="logo"
           style={{
-            width: "150px", // Enlarged logo size
+            width: "150px",
             height: "auto",
           }}
         />
-      </div>
 
-      {/* Contact Email */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10px", // Move email to the top-right
-          right: "10px",
-          color: "#fff",
-          zIndex: 1000,
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          padding: "10px",
-          borderRadius: "5px",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <a
-          href="mailto:agrawalparesh11@gmail.com"
+        {/* Contact Email */}
+        <div
+          className="email"
           style={{
             color: "#fff",
-            textDecoration: "none",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            fontFamily: "Arial, sans-serif",
             fontWeight: "bold",
           }}
         >
-          agrawalparesh11@gmail.com
-        </a>
+          <a
+            href="mailto:agrawalparesh11@gmail.com"
+            style={{
+              color: "#fff",
+              textDecoration: "none",
+            }}
+          >
+            agrawalparesh11@gmail.com
+          </a>
+        </div>
       </div>
 
       {/* Main Slide */}
