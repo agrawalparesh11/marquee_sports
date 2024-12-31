@@ -17,7 +17,6 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const isDragging = useRef(false);
   const startX = useRef(0);
-  const endX = useRef(0);
 
   const handleNext = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -32,20 +31,19 @@ export default function Home() {
     startX.current = e.clientX;
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e) => {
     if (!isDragging.current) return;
     isDragging.current = false;
 
-    if (startX.current > endX.current + 50) {
-      handleNext(); // Dragged left
-    } else if (startX.current < endX.current - 50) {
-      handlePrev(); // Dragged right
-    }
-  };
+    const distance = e.clientX - startX.current;
 
-  const handleMouseMove = (e) => {
-    if (!isDragging.current) return;
-    endX.current = e.clientX;
+    if (distance > 50) {
+      // Dragged right
+      handlePrev();
+    } else if (distance < -50) {
+      // Dragged left
+      handleNext();
+    }
   };
 
   return (
@@ -59,7 +57,6 @@ export default function Home() {
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
     >
       {/* Set the Title */}
       <Head>
