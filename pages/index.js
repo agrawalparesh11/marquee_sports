@@ -50,7 +50,13 @@ export default function Home() {
 
   return (
     <div
-      style={{ margin: 0, padding: 0, backgroundColor: "#000", height: "100vh" }}
+      style={{
+        margin: 0,
+        padding: 0,
+        backgroundColor: "#000",
+        height: "100vh",
+        overflow: "hidden",
+      }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
@@ -66,8 +72,37 @@ export default function Home() {
         <img
           src="/logo.png"
           alt="Logo"
-          style={{ width: "100px", height: "auto" }}
+          style={{
+            width: "150px", // Enlarged logo size
+            height: "auto",
+          }}
         />
+      </div>
+
+      {/* Contact Email */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10px", // Move email to the top-right
+          right: "10px",
+          color: "#fff",
+          zIndex: 1000,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          padding: "10px",
+          borderRadius: "5px",
+          fontFamily: "Arial, sans-serif",
+        }}
+      >
+        <a
+          href="mailto:agrawalparesh11@gmail.com"
+          style={{
+            color: "#fff",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          agrawalparesh11@gmail.com
+        </a>
       </div>
 
       {/* Main Slide */}
@@ -84,9 +119,9 @@ export default function Home() {
           src={slides[currentSlide]}
           alt={`Slide ${currentSlide + 1}`}
           style={{
-            width: "75vw", // 75% of viewport width
-            height: "75vh", // 75% of viewport height
-            objectFit: "cover",
+            maxWidth: "90vw", // Dynamically adjust slide width
+            maxHeight: "90vh", // Dynamically adjust slide height
+            objectFit: "contain", // Ensure the entire image is visible
             borderRadius: "10px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
           }}
@@ -119,7 +154,7 @@ export default function Home() {
           onClick={handleNext}
           style={{
             position: "absolute",
-            right: "20px", // Fixed to the correct placement
+            right: "20px",
             top: "50%",
             transform: "translateY(-50%)",
             backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -163,32 +198,6 @@ export default function Home() {
             }}
           ></div>
         ))}
-      </div>
-
-      {/* Contact Email */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          right: "20px",
-          color: "#fff",
-          zIndex: 1000,
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          padding: "10px",
-          borderRadius: "5px",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <a
-          href="mailto:agrawalparesh11@gmail.com"
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          agrawalparesh11@gmail.com
-        </a>
       </div>
     </div>
   );
