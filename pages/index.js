@@ -65,21 +65,6 @@ export default function Home() {
       <Head>
         <title>Marque Sports Co.</title>
         <meta name="description" content="A simple interactive slide presentation." />
-        <style>
-          {`
-            @media (max-width: 600px) {
-              .header-container {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
-              }
-              .logo {
-                margin-bottom: 10px;
-              }
-            }
-          `}
-        </style>
       </Head>
 
       {/* Logo */}
@@ -87,7 +72,6 @@ export default function Home() {
         <img
           src="/logo.png"
           alt="Logo"
-          className="logo"
           style={{
             width: "150px",
             height: "auto",
@@ -105,17 +89,57 @@ export default function Home() {
           position: "relative",
         }}
       >
-        <img
-          src={slides[currentSlide]}
-          alt={`Slide ${currentSlide + 1}`}
+        {/* Slide Container */}
+        <div
           style={{
-            maxWidth: "90vw", // Dynamically adjust slide width
-            maxHeight: "90vh", // Dynamically adjust slide height
-            objectFit: "contain", // Ensure the entire image is visible
+            position: "relative",
+            width: "90vw",
+            height: "90vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             borderRadius: "10px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
           }}
-        />
+        >
+          {/* Slide Image */}
+          <img
+            src={slides[currentSlide]}
+            alt={`Slide ${currentSlide + 1}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain", // Ensure the entire image is visible
+              borderRadius: "10px",
+            }}
+          />
+
+          {/* Dots (Slide Indicators) */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10px", // Position dots within the slide container
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {slides.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  margin: "0 5px",
+                  borderRadius: "50%",
+                  backgroundColor: currentSlide === index ? "#000" : "rgba(0, 0, 0, 0.5)",
+                  cursor: "pointer",
+                }}
+              ></div>
+            ))}
+          </div>
+        </div>
 
         {/* Navigation Buttons */}
         <button
@@ -164,38 +188,11 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Dots (Slide Indicators) */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "50px", // Space above the email
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            style={{
-              width: "12px",
-              height: "12px",
-              margin: "0 5px",
-              borderRadius: "50%",
-              backgroundColor: currentSlide === index ? "#000" : "rgba(0, 0, 0, 0.5)",
-              cursor: "pointer",
-            }}
-          ></div>
-        ))}
-      </div>
-
       {/* Contact Email */}
       <div
-        className="email"
         style={{
           position: "absolute",
-          bottom: "10px", // Ensure it stays below the dots
+          bottom: "10px", // Ensure it stays below the slide
           right: "10px",
           color: "#000",
           backgroundColor: "rgba(255, 255, 255, 0.8)", // White background for email
@@ -213,7 +210,7 @@ export default function Home() {
             textDecoration: "none",
           }}
         >
-          agrawalparesh11@gmail.com
+          CONTACT US: agrawalparesh11@gmail.com
         </a>
       </div>
     </div>
