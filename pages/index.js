@@ -103,7 +103,8 @@ export default function Home() {
           className="email"
           style={{
             color: "#fff",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Snug background around the email
+            display: "inline-block", // Ensure the background only covers the text
             padding: "5px 10px",
             borderRadius: "5px",
             fontFamily: "Arial, sans-serif",
